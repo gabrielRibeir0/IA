@@ -118,7 +118,7 @@ class Graph:
         return custo
 
     ################################################################################
-    #     procura DFS -- TO DO
+    #     procura DFS
     ####################################################################################
     def procura_DFS(self, start, end , path=[], visited=set()):
         path.append(start)
@@ -127,18 +127,42 @@ class Graph:
         if start == end:
             custoTotal = self.calcula_custo(path)
             return (path, custoTotal)
+
         for (adjacente, peso) in self.m_graph[start]:
             if adjacente not in visited:
                 resultado = self.procura_DFS(adjacente, end, path, visited)
                 if resultado is not None:
                     return resultado
         path.pop()
+
         return None
     
     #####################################################
     # Procura BFS  -- TO DO
     ######################################################
-    #def procura_BFS(self):
+    def procura_BFS(self, start, end, path=[], visited=set(), queue=set()):
+        if start not in path:
+            path.append(start)
+
+        if start not in visited:
+            visited.add(start)
+
+        if start == end:
+            custoTotal = self.calcula_custo(path)
+            return (path, custoTotal)
+
+        if start in queue:
+            queue.remove(start)
+
+        for (adjacente, peso) in self.m_graph[start]:
+            if adjacente not in visited:
+                queue.add(adjacente)
+                resultado = self.procura_BFS(adjacente, end, path, visited, queue)
+                if resultado is not None:
+                    return resultado
+        path.pop()
+
+        return None
     
 
     ####################
