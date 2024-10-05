@@ -140,30 +140,38 @@ class Graph:
     #####################################################
     # Procura BFS  -- TO DO
     ######################################################
-    def procura_BFS(self, start, end, path=[], visited=set(), queue=set()):
-        if start not in path:
-            path.append(start)
+    def procura_BFS(self, start, end):
+        visited = set()
+        queue = Queue()
 
-        if start not in visited:
-            visited.add(start)
+        queue.put(start)
+        visited.add(start)
 
-        if start == end:
-            custoTotal = self.calcula_custo(path)
-            return (path, custoTotal)
+        parent = dict()
+        parent[start] = None
 
-        if start in queue:
-            queue.remove(start)
+        path_found = False
+        while not queue.empty() and not path_found:
+            if start == end:
+                path_found = True
+            else:
+                for (adjacente, peso) in self.m_graph[start]:
+                    if adjacente not in visited:
+                        queue.put(adjacente)
+                        parent[adjacente] = start
+                        visited.add(adjacente)
+                start = queue.get()
 
-        for (adjacente, peso) in self.m_graph[start]:
-            if adjacente not in visited:
-                queue.add(adjacente)
-                resultado = self.procura_BFS(adjacente, end, path, visited, queue)
-                if resultado is not None:
-                    return resultado
-        path.pop()
+        path = []
+        while parent[end] != None:
+            path.append(parent[end])
+            end = parent[end]
 
-        return None
-    
+        path.reverse()
+        custo = self.calcula_custo(path)
+        return (path, custo)
+
+
 
     ####################
     # função  getneighbours, devolve vizinhos de um nó
