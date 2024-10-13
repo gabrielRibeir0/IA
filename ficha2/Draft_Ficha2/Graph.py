@@ -224,7 +224,51 @@ class Graph:
     ##########################################
     #    A* - To Do
     ##########################################
+    def procura_aStar(self, inicio, fim):
+        open_list = set([inicio])
+        closed_list = set()
 
+        parents = {}
+        parents[inicio] = None
+
+        custo_acumulado = {}
+        custo_acumulado[inicio] = 0
+
+        while len(open_list) > 0:
+            melhor_nodo = None
+            for nodo in open_list:
+                if melhor_nodo is None or self.getH(nodo) + custo_acumulado[nodo] < self.getH(melhor_nodo) + custo_acumulado[melhor_nodo]:
+                    if melhor_nodo is not None:
+                        print("nodo ", nodo  + " ", self.getH(nodo) + custo_acumulado[nodo])
+                        print("melhor nodo ", melhor_nodo  + " ", self.getH(melhor_nodo) + custo_acumulado[melhor_nodo])
+                    melhor_nodo = nodo
+            print("FIM")
+
+
+            if melhor_nodo is None:
+                #caminho não existe
+                return None
+
+            if melhor_nodo == fim:
+                path = []
+                while parents[fim] != None:
+                    path.append(parents[fim])
+                    fim = parents[fim]
+
+                path.reverse()
+                custo = self.calcula_custo(path)
+                return (path, custo)
+            else:
+                for (adjacente, peso) in self.getNeighbours(melhor_nodo):
+                    if adjacente not in closed_list and adjacente not in open_list:
+                        open_list.add(adjacente)
+                        parents[adjacente] = melhor_nodo
+                        custo_acumulado[adjacente] = custo_acumulado[melhor_nodo] + peso
+                closed_list.add(melhor_nodo)
+                open_list.remove(melhor_nodo)
+
+        #caminho não existe
+        return None
         
 
     ###################################3
@@ -252,7 +296,6 @@ class Graph:
             melhor_nodo = None
             for nodo in open_list:
                 if melhor_nodo is None or self.getH(nodo) < self.getH(melhor_nodo):
-                    #parents[nodo] = melhor_nodo
                     melhor_nodo = nodo
 
 
