@@ -1,0 +1,14 @@
+Ex 1
+Tipo - Problema de estado único
+Estado inicial - Passageiro está na Estação do Aeroporto
+Estado final - Passageiro chega à Estação do Lumiar
+Operações - Mudança de Estação e mudança de linha
+Custo - Número de estações até ao destino
+
+Ex2
+Tipo - problema de estado único
+Estado inicial - todas as peças na torre C por ordem crescente de tamanho
+Estado final - todas as peças na torre A por ordem crescente de tamanho
+Operações - mover peça da torre X para Y
+            pré condição: tamanho da peça em X é menor que o tamanho da peça em Y
+Custo - número de Operações
