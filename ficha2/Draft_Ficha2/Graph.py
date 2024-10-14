@@ -260,6 +260,9 @@ class Graph:
                         open_list.add(adjacente)
                         parents[adjacente] = melhor_nodo
                         custo_acumulado[adjacente] = custo_acumulado[melhor_nodo] + peso
+                    elif adjacente in open_list and custo_acumulado[melhor_nodo] + peso < custo_acumulado[adjacente]:
+                        parents[adjacente] = melhor_nodo
+                        custo_acumulado[adjacente] = custo_acumulado[melhor_nodo] + peso
                 closed_list.add(melhor_nodo)
                 open_list.remove(melhor_nodo)
 
