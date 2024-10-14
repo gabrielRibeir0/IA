@@ -238,11 +238,7 @@ class Graph:
             melhor_nodo = None
             for nodo in open_list:
                 if melhor_nodo is None or self.getH(nodo) + custo_acumulado[nodo] < self.getH(melhor_nodo) + custo_acumulado[melhor_nodo]:
-                    if melhor_nodo is not None:
-                        print("nodo ", nodo  + " ", self.getH(nodo) + custo_acumulado[nodo])
-                        print("melhor nodo ", melhor_nodo  + " ", self.getH(melhor_nodo) + custo_acumulado[melhor_nodo])
                     melhor_nodo = nodo
-            print("FIM")
 
 
             if melhor_nodo is None:
