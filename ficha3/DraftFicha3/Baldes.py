@@ -37,40 +37,70 @@ class Balde():
     # Partindo do estado inicial, utilizando as ações possíveis como transições
     # construir o grafo
     def cria_grafo(self):
+        estados = []
+        visitados = []
+        estados.append(self.start)
+        visitados.append(self.start)
 
-        # to do...
+        while estados != []:
+            estado = estados.pop()
+            expansao = self.expande(estado)
+            for e in expansao:
+                self.g.add_edge(estado,e,1)
+                if e not in visitados:
+                    estados.append(e)
+                    visitados.append(e)
 
     # Dado um estado, expande para outros mediante as açoes possiveis
     def expande(self,estado):
-        # to do...
+        lista_acoes = []
+        cap_balde1 = int(estado[1])
+        cap_balde2 = int(estado[3])
 
+        if cap_balde1 < self.balde1:
+            lista_acoes.append(self.enche1(estado))
+        if cap_balde2 < self.balde2:
+            lista_acoes.append(self.enche2(estado))
+        if cap_balde1 > 0:
+            lista_acoes.append(self.esvazia1(estado))
+        if cap_balde2 > 0:
+            lista_acoes.append(self.esvazia2(estado))
+        if cap_balde1 > 0 and cap_balde2 < self.balde2:
+            lista_acoes.append(self.despeja12(estado))
+        if cap_balde2 > 0 and cap_balde1 < self.balde1:
+            lista_acoes.append(self.despeja21(estado))
+
+        return lista_acoes
 
     # Devolve o estado resultante de esvaziar o primeiro balde
     def esvazia1(self, nodo):
-        # to do...
+        return "(0,"+ str(nodo[3]) +")"
 
     # Devolve o estado resultante de esvaziar o segundo balde
     def esvazia2(self, nodo):
-        # to do...
+        return "("+ str(nodo[1]) +",0)"
 
     # Devolve o estado resultante de encher totalmente o primeiro balde da torneira
     def enche1(self, nodo):
-        # to do ...
-
+        return "("+ str(self.balde1) +","+ str(nodo[3]) +")"
 
     # Devolve o estado resultante de encher totalmente o segundo balde da torneira
     def enche2(self, nodo):
-        # to do...
-
+        return "("+ str(nodo[1]) +","+ str(self.balde2) +")"
 
     # Devolve o estado resultante de despejar o balde 1 no balde 2
     def despeja12(self, nodo):
-         # to do...
-
+        cap1 = int(nodo[1])
+        cap2 = int(nodo[3])
+        cap_movida = min(cap1, self.balde2 - cap2)
+        return "("+ str(cap1 - cap_movida) +","+ str(cap2 + cap_movida) +")"
 
     # Devolve o estado resultante de despejar o balde 2 no balde 1
     def despeja21(self, nodo):
-        # to do...
+        cap1 = int(nodo[1])
+        cap2 = int(nodo[3])
+        cap_movida = min(self.balde1 - cap1, cap2)
+        return "("+ str(cap1 + cap_movida) +","+ str(cap2 - cap_movida) +")"
 
     # Encontra a solução utilizando DFS (recorre à classe grafo e node implementada antes
     def solucaoDFS(self,start,goal):
